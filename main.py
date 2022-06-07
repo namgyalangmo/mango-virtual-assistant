@@ -24,38 +24,39 @@ def take_command():
             command = command.lower()
             if 'mango' in command:
                 command = command.replace('mango','')
-                print(command)
     except:
         pass
     return command
 
 def run_mango():
     command = take_command()
+    print(command)
     if 'play' in command:
-        song = command.replace('play','')
+        song = command.replace('play', '')
         talk('playing' + song)
         pywhatkit.playonyt(song)
-
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
         print(time)
-        talk ('Current time is ' + time)
-
-    elif ('how are you') or ('are you okay') in command:
-        talk('I am having a great day ever since you started talking to me')
-
-    elif ('joke') or ('tell me something funny') or ('make me laugh') in command:
-        talk(pyjokes.get_joke())
-
-    elif ('who is') or ('what is') or ('why is') in command:
+        talk('Current time is ' + time)
+    elif 'who is' in command or 'what is' in command or 'why is' in command:
         question = command.replace('who is', '')
         question = command.replace('what is', '')
         question = command.replace('why is', '')
-        info = wikipedia.summary(question, 1)
+        info = wikipedia.summary(question, 3)
         print(info)
         talk(info)
+    elif 'how are you'in command or 'are you doing' in command:
+        talk('I am having a great day ever since you started talking to me')
+    elif 'joke' in command or 'tell me something funny' in command or ('make me laugh') in command:
+        talk(pyjokes.get_joke())
+    elif 'date me' in command:
+        talk('sorry, I think that would be inappropriate')
+    elif 'are you single' in command:
+        talk('Yes, and I like it that way')
     else:
         talk('I am sorry I did not catch that, can you please repeat what you said?')
+    end_program()
 
 def end_program():
     talk('Is there anything else i can help you with?')
