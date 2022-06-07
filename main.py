@@ -1,5 +1,10 @@
+import sys
 import speech_recognition as sr
 import pyttsx3
+import pywhatkit
+import datetime
+import wikipedia
+import pyjokes
 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
@@ -9,13 +14,56 @@ engine.setProperty('voice', voices[1].id)
 def talk(text):
     engine.say(text)
     engine.runAndWait()
-try:
-    with sr.Microphone() as source:
-        print('listening...')
-        voice = listener.listen(source)
-        command = listener.recognize_google(voice)
-        command = command.lower()
-        if 'mango' in command:
-            talk(command)
-except:
-    pass
+
+def take_command():
+    try:
+        with sr.Microphone() as source:
+            print('listening...')
+            voice = listener.listen(source)
+            command = listener.recognize_google(voice)
+            command = command.lower()
+            if 'mango' in command:
+                command = command.replace('mango','')
+                print(command)
+    except:
+        pass
+    return command
+
+def run_mango():
+    command = take_command()
+    if 'play' in command:
+        song = command.replace('play','')
+        talk('playing' + song)
+        pywhatkit.playonyt(song)
+    elif 'time' in command:
+        time = datetime.datetime.now().strftime('%I:%M %p')
+        print(time)
+        talk ('Current time is ' + time)
+    elif 'who is' or 'what is' or 'why is' in command:
+        question = command.replace('who is', '')
+        question = command.replace('what is', '')
+        question = command.replace('why is', '')
+        info = wikipedia.summary(question, 1)
+        print(info)
+        talk(info)
+    elif 'joke' or 'tell me something funny' or 'make me laugh' in command:
+        talk(pyjokes.get_joke())
+    elif 'how are you' or ' are you okay' in command:
+        talk('I am having a great day because you started talking to me')
+    else:
+        talk('I am sorry I did not catch that, can you please repeat what you said?')
+
+def end_program():
+    talk('Is there anything else i can help you with?')
+    command = take_command()
+    if 'yes' in command:
+        run_mango()
+    if 'no' or 'thank you' or 'thanks' in command:
+        talk('Okay! have a great day')
+        sys.exit()
+
+
+while True:
+    talk('Hi there! I am mango, your virtual assistant, How can I help you today')
+    run_mango()
+    end_program()
