@@ -35,35 +35,40 @@ def run_mango():
         song = command.replace('play','')
         talk('playing' + song)
         pywhatkit.playonyt(song)
+
     elif 'time' in command:
         time = datetime.datetime.now().strftime('%I:%M %p')
         print(time)
         talk ('Current time is ' + time)
-    elif 'who is' or 'what is' or 'why is' in command:
+
+    elif ('how are you') or ('are you okay') in command:
+        talk('I am having a great day ever since you started talking to me')
+
+    elif ('joke') or ('tell me something funny') or ('make me laugh') in command:
+        talk(pyjokes.get_joke())
+
+    elif ('who is') or ('what is') or ('why is') in command:
         question = command.replace('who is', '')
         question = command.replace('what is', '')
         question = command.replace('why is', '')
         info = wikipedia.summary(question, 1)
         print(info)
         talk(info)
-    elif 'joke' or 'tell me something funny' or 'make me laugh' in command:
-        talk(pyjokes.get_joke())
-    elif 'how are you' or ' are you okay' in command:
-        talk('I am having a great day because you started talking to me')
     else:
         talk('I am sorry I did not catch that, can you please repeat what you said?')
 
 def end_program():
     talk('Is there anything else i can help you with?')
     command = take_command()
+
     if 'yes' in command:
         run_mango()
-    if 'no' or 'thank you' or 'thanks' in command:
+    else:
         talk('Okay! have a great day')
         sys.exit()
 
 
-while True:
-    talk('Hi there! I am mango, your virtual assistant, How can I help you today')
-    run_mango()
-    end_program()
+
+talk('Hi there! I am mango, your virtual assistant, How can I help you today')
+run_mango()
+end_program()
