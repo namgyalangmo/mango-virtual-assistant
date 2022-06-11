@@ -55,7 +55,7 @@ def run_mango():
     elif 'are you single' in command:
         talk('Yes, and I like it that way')
     else:
-        talk('I am sorry I did not catch that, can you please repeat what you said?')
+        talk('I am sorry I did not catch that')
     end_program()
 
 def end_program():
