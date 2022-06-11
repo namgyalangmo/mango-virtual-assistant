@@ -72,4 +72,3 @@ def end_program():
 
 talk('Hi there! I am mango, your virtual assistant, How can I help you today')
 run_mango()
-end_program()
